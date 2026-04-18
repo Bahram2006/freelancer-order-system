@@ -73,7 +73,10 @@ export default function OrdersList() {
                   </td>
 
                   <td className="p-4 space-x-2">
-                    <button className="text-indigo-600 hover:underline">
+                    <button
+                      onClick={() => navigate(`/orders/edit/${order.id}`)}
+                      className="text-indigo-600 hover:underline"
+                    >
                       Edit
                     </button>
 
