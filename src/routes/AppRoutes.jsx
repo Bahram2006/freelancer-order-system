@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import EditOrder from "../pages/orders/EditOrder";
 
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -12,6 +13,7 @@ export default function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/orders" element={<OrdersList />} />
       <Route path="/create-order" element={<CreateOrder />} />
+      <Route path="/orders/edit/:id" element={<EditOrder />} />
     </Routes>
   );
 }
