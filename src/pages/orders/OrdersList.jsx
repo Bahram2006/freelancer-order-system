@@ -2,23 +2,14 @@ import MainLayout from "../../layouts/MainLayout";
 import { useNavigate } from "react-router-dom";
 import { useOrders } from "../../context/OrderContext";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 export default function OrdersList() {
   const { orders, deleteOrder } = useOrders();
-  const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
-  // 🔥 FILTER LOGIC
-  const filteredOrders = orders.filter((o) => {
-    const matchSearch = o.client.toLowerCase().includes(search.toLowerCase());
-
-    const matchStatus = statusFilter === "All" || o.status === statusFilter;
-
-    return matchSearch && matchStatus;
-  });
+  const navigate = useNavigate();
 
   const statusColor = (status) => {
     switch (status) {
@@ -33,9 +24,21 @@ export default function OrdersList() {
     }
   };
 
+  // 🔥 FILTER LOGIC
+  const filteredOrders = orders.filter((order) => {
+    const matchSearch = order.client
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchStatus =
+      statusFilter === "All" || order.status === statusFilter;
+
+    return matchSearch && matchStatus;
+  });
+
   return (
     <MainLayout>
-      {/* HEADER */}
+      {/* 🔝 HEADER */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Orders</h1>
 
@@ -48,19 +51,19 @@ export default function OrdersList() {
       </div>
 
       {/* 🔍 SEARCH + FILTER */}
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <div className="flex gap-4 mb-6">
         <input
           type="text"
-          placeholder="Search client..."
+          placeholder="Search by client..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-3 border rounded-xl w-full md:w-1/2"
+          className="flex-1 p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
         />
 
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="p-3 border rounded-xl w-full md:w-1/4"
+          className="p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="All">All</option>
           <option value="Pending">Pending</option>
@@ -69,7 +72,7 @@ export default function OrdersList() {
         </select>
       </div>
 
-      {/* TABLE */}
+      {/* 📊 TABLE */}
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
         <table className="w-full text-left">
           <thead className="bg-gray-50 text-gray-600 text-sm">
@@ -86,7 +89,7 @@ export default function OrdersList() {
             {filteredOrders.length === 0 ? (
               <tr>
                 <td colSpan="5" className="p-6 text-center text-gray-500">
-                  No matching orders 🚀
+                  No matching orders
                 </td>
               </tr>
             ) : (
@@ -101,9 +104,7 @@ export default function OrdersList() {
 
                   <td className="p-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm ${statusColor(
-                        order.status,
-                      )}`}
+                      className={`px-3 py-1 rounded-full text-sm ${statusColor(order.status)}`}
                     >
                       {order.status}
                     </span>
@@ -118,10 +119,7 @@ export default function OrdersList() {
                     </button>
 
                     <button
-                      onClick={() => {
-                        deleteOrder(order.id);
-                        toast.success("Order deleted 🗑️");
-                      }}
+                      onClick={() => deleteOrder(order.id)}
                       className="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition"
                     >
                       Delete
