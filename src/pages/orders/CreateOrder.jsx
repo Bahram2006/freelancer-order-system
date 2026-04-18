@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
-import { useOrders } from "../../context/OrderContext"
+import { useOrders } from "../../context/OrderContext";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateOrder() {
@@ -23,8 +23,27 @@ export default function CreateOrder() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    addOrder(form);
+    // 🔥 simple validation
+    if (!form.client || !form.price) {
+      alert("Please fill all fields");
+      return;
+    }
 
+    // ✅ add order (FULL form ulanýarys)
+    addOrder({
+      client: form.client,
+      price: form.price,
+      status: form.status,
+    });
+
+    // 🔄 reset form
+    setForm({
+      client: "",
+      price: "",
+      status: "Pending",
+    });
+
+    // 🚀 redirect
     navigate("/orders");
   };
 
@@ -73,9 +92,9 @@ export default function CreateOrder() {
             onChange={handleChange}
             className="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <option>Pending</option>
-            <option>In Progress</option>
-            <option>Completed</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
           </select>
         </div>
 

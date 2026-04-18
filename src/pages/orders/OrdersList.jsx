@@ -1,13 +1,13 @@
 import MainLayout from "../../layouts/MainLayout";
 import { useNavigate } from "react-router-dom";
-
+import { useOrders } from "../../context/OrderContext";
 
 export default function OrdersList() {
-  const orders = [
-    { id: 1, client: "John Doe", price: "$200", status: "Pending" },
-    { id: 2, client: "Alice", price: "$350", status: "Completed" },
-    { id: 3, client: "Bob", price: "$120", status: "In Progress" },
-  ];
+  const { orders, deleteOrder } = useOrders();
+
+  const navigate = useNavigate();
+
+  console.log("ORDERS:", orders); // 🔥 DEBUG
 
   const statusColor = (status) => {
     switch (status) {
@@ -21,8 +21,6 @@ export default function OrdersList() {
         return "bg-gray-100 text-gray-600";
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <MainLayout>
@@ -50,33 +48,45 @@ export default function OrdersList() {
           </thead>
 
           <tbody>
-            {orders.map((order) => (
-              <tr
-                key={order.id}
-                className="border-t hover:bg-gray-50 transition"
-              >
-                <td className="p-4 font-medium">#{order.id}</td>
-                <td className="p-4">{order.client}</td>
-                <td className="p-4">{order.price}</td>
-
-                <td className="p-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm ${statusColor(order.status)}`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
-
-                <td className="p-4 space-x-2">
-                  <button className="text-indigo-600 hover:underline">
-                    Edit
-                  </button>
-                  <button className="text-red-500 hover:underline">
-                    Delete
-                  </button>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="p-6 text-center text-gray-500">
+                  No orders yet
                 </td>
               </tr>
-            ))}
+            ) : (
+              orders.map((order) => (
+                <tr
+                  key={order.id}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="p-4 font-medium">#{order.id}</td>
+                  <td className="p-4">{order.client}</td>
+                  <td className="p-4">{order.price}</td>
+
+                  <td className="p-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm ${statusColor(order.status)}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+
+                  <td className="p-4 space-x-2">
+                    <button className="text-indigo-600 hover:underline">
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteOrder(order.id)} // ✅ FIX
+                      className="text-red-500 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
