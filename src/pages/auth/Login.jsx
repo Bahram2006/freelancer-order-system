@@ -1,42 +1,77 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
+
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const success = login(form.email, form.password);
+
+    if (success) {
+      toast.success("Welcome back 🚀");
+      navigate("/");
+    } else {
+      toast.error("Invalid credentials ❌");
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-500">
-      <div className="backdrop-blur-lg bg-white/10 border border-white/20 p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
-          Welcome Back 👋
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4"
+      >
+        <h1 className="text-2xl font-bold text-center">Login</h1>
 
-        <form className="space-y-4">
-          <div>
-            <label className="text-white text-sm">Email</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full mt-1 p-3 rounded-lg bg-white/20 text-white placeholder-gray-200 outline-none focus:ring-2 focus:ring-white"
-            />
-          </div>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full p-3 border rounded-xl"
+        />
 
-          <div>
-            <label className="text-white text-sm">Password</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full mt-1 p-3 rounded-lg bg-white/20 text-white placeholder-gray-200 outline-none focus:ring-2 focus:ring-white"
-            />
-          </div>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          className="w-full p-3 border rounded-xl"
+        />
 
-          <button
-            type="submit"
-            className="w-full bg-white text-indigo-600 font-semibold py-3 rounded-lg hover:bg-gray-100 transition"
+        <button className="w-full bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 transition">
+          Login
+        </button>
+
+        <p className="text-sm text-center">
+          Don’t have an account?{" "}
+          <span
+            onClick={() => navigate("/register")}
+            className="text-indigo-600 cursor-pointer"
           >
-            Sign In
-          </button>
-        </form>
-
-        <p className="text-center text-gray-200 text-sm mt-4">
-          Don’t have an account? Sign up
+            Register
+          </span>
         </p>
-      </div>
+      </form>
     </div>
   );
 }
