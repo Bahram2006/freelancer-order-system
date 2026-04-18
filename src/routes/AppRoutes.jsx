@@ -5,6 +5,7 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import OrdersList from "../pages/orders/OrdersList";
 import CreateOrder from "../pages/orders/CreateOrder";
+import Register from "../pages/auth/Register";
 
 
 export default function AppRoutes() {
@@ -15,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/orders" element={<OrdersList />} />
       <Route path="/create-order" element={<CreateOrder />} />
       <Route path="/orders/edit/:id" element={<EditOrder />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
