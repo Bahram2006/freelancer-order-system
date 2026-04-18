@@ -13,6 +13,14 @@ export function OrderProvider({ children }) {
         ];
   });
 
+  const updateOrder = (updatedOrder) => {
+  setOrders((prev) =>
+    prev.map((o) =>
+      o.id === updatedOrder.id ? updatedOrder : o
+    )
+  )
+}
+
   const addOrder = (order) => {
     setOrders((prev) => [...prev, { ...order, id: Date.now() }]);
   };
@@ -26,7 +34,7 @@ export function OrderProvider({ children }) {
   }, [orders]);
 
   return (
-    <OrderContext.Provider value={{ orders, addOrder, deleteOrder }}>
+    <OrderContext.Provider value={{ orders, addOrder, deleteOrder, updateOrder }}>
       {children}
     </OrderContext.Provider>
   );
