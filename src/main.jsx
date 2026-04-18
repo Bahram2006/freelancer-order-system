@@ -6,14 +6,17 @@ import "./index.css";
 import { OrderProvider } from "./context/OrderContext";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AuthProvider>
+    <ThemeProvider>
       <OrderProvider>
-        <App />
-        <Toaster position="top-right" />
+        <AuthProvider>
+          <App />
+          <Toaster position="top-right" />
+        </AuthProvider>
       </OrderProvider>
-    </AuthProvider>
-  </BrowserRouter>
+    </ThemeProvider>
+  </BrowserRouter>,
 );

@@ -1,10 +1,12 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 export default function MainLayout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const menu = [
     { name: "Dashboard", path: "/" },
@@ -17,7 +19,7 @@ export default function MainLayout({ children }) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 transition">
       {/* 🔥 SIDEBAR */}
       <div className="w-64 bg-gray-950 text-gray-300 flex flex-col">
         <div
@@ -47,7 +49,7 @@ export default function MainLayout({ children }) {
           })}
         </nav>
 
-        {/* 🔻 LOGOUT BUTTON */}
+        {/* 🔻 LOGOUT */}
         <div className="p-4 border-t border-gray-800">
           <button
             onClick={handleLogout}
@@ -61,13 +63,22 @@ export default function MainLayout({ children }) {
       {/* 🔥 MAIN */}
       <div className="flex-1 flex flex-col">
         {/* TOPBAR */}
-        <div className="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm">
-          <h1 className="font-semibold text-gray-700">
+        <div className="h-16 bg-white dark:bg-gray-800 border-b dark:border-gray-700 flex items-center justify-between px-6 shadow-sm transition">
+          <h1 className="font-semibold text-gray-700 dark:text-gray-200">
             Freelancer Dashboard
           </h1>
 
-          <div className="flex items-center gap-3">
-            <span className="text-gray-600 text-sm">
+          <div className="flex items-center gap-4">
+            {/* 🌙 THEME BUTTON */}
+            <button
+              onClick={toggleTheme}
+              className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-200 hover:scale-105 transition"
+            >
+              {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+            </button>
+
+            {/* 👤 USER */}
+            <span className="text-gray-600 dark:text-gray-300 text-sm">
               {user?.email}
             </span>
 
@@ -78,7 +89,7 @@ export default function MainLayout({ children }) {
         </div>
 
         {/* CONTENT */}
-        <div className="p-6 overflow-y-auto flex-1">
+        <div className="p-6 overflow-y-auto flex-1 text-gray-800 dark:text-gray-100 transition">
           {children}
         </div>
       </div>
