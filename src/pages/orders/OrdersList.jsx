@@ -35,7 +35,7 @@ export default function OrdersList() {
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl shadow overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
         <table className="w-full text-left">
           <thead className="bg-gray-50 text-gray-600 text-sm">
             <tr>
@@ -58,7 +58,7 @@ export default function OrdersList() {
               orders.map((order) => (
                 <tr
                   key={order.id}
-                  className="border-t hover:bg-gray-50 transition"
+                  className="border-t hover:bg-indigo-50 transition duration-200"
                 >
                   <td className="p-4 font-medium">#{order.id}</td>
                   <td className="p-4">{order.client}</td>
@@ -75,14 +75,14 @@ export default function OrdersList() {
                   <td className="p-4 space-x-2">
                     <button
                       onClick={() => navigate(`/orders/edit/${order.id}`)}
-                      className="text-indigo-600 hover:underline"
+                      className="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200 transition"
                     >
                       Edit
                     </button>
 
                     <button
-                      onClick={() => deleteOrder(order.id)} // ✅ FIX
-                      className="text-red-500 hover:underline"
+                      onClick={() => deleteOrder(order.id)}
+                      className="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition"
                     >
                       Delete
                     </button>
