@@ -1,27 +1,32 @@
-import { useState } from "react"
-import MainLayout from "../../layouts/MainLayout"
+import { useState } from "react";
+import MainLayout from "../../layouts/MainLayout";
+import { useOrders } from "../../hooks/useOrders";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateOrder() {
   const [form, setForm] = useState({
     client: "",
     price: "",
     status: "Pending",
-  })
+  });
+
+  const { addOrder } = useOrders();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("New Order:", form)
+    e.preventDefault();
 
-    // soň backend-e ibereris
-    alert("Order created 🚀")
-  }
+    addOrder(form);
+
+    navigate("/orders");
+  };
 
   return (
     <MainLayout>
@@ -33,7 +38,6 @@ export default function CreateOrder() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-2xl shadow max-w-lg space-y-4"
       >
-
         {/* Client */}
         <div>
           <label className="block text-gray-600 mb-1">Client Name</label>
@@ -82,8 +86,7 @@ export default function CreateOrder() {
         >
           Create Order
         </button>
-
       </form>
     </MainLayout>
-  )
+  );
 }
