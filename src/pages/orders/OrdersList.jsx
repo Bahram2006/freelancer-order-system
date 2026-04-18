@@ -2,6 +2,7 @@ import MainLayout from "../../layouts/MainLayout";
 import { useNavigate } from "react-router-dom";
 import { useOrders } from "../../context/OrderContext";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function OrdersList() {
   const { orders, deleteOrder } = useOrders();
@@ -12,12 +13,9 @@ export default function OrdersList() {
 
   // 🔥 FILTER LOGIC
   const filteredOrders = orders.filter((o) => {
-    const matchSearch = o.client
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const matchSearch = o.client.toLowerCase().includes(search.toLowerCase());
 
-    const matchStatus =
-      statusFilter === "All" || o.status === statusFilter;
+    const matchStatus = statusFilter === "All" || o.status === statusFilter;
 
     return matchSearch && matchStatus;
   });
@@ -104,7 +102,7 @@ export default function OrdersList() {
                   <td className="p-4">
                     <span
                       className={`px-3 py-1 rounded-full text-sm ${statusColor(
-                        order.status
+                        order.status,
                       )}`}
                     >
                       {order.status}
@@ -120,7 +118,10 @@ export default function OrdersList() {
                     </button>
 
                     <button
-                      onClick={() => deleteOrder(order.id)}
+                      onClick={() => {
+                        deleteOrder(order.id);
+                        toast.success("Order deleted 🗑️");
+                      }}
                       className="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition"
                     >
                       Delete

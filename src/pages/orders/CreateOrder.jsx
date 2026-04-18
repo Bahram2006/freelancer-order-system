@@ -2,6 +2,7 @@ import { useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import { useOrders } from "../../context/OrderContext";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function CreateOrder() {
   const [form, setForm] = useState({
@@ -45,6 +46,16 @@ export default function CreateOrder() {
 
     // 🚀 redirect
     navigate("/orders");
+
+    addOrder({
+  client: form.client,
+  price: form.price,
+  status: "Pending",
+});
+
+toast.success("Order created successfully 🚀");
+
+navigate("/orders");
   };
 
   return (

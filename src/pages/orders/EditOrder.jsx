@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useOrders } from "../../context/OrderContext";
 import { useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
+import toast from "react-hot-toast";
 
 export default function EditOrder() {
   const { id } = useParams();
@@ -30,6 +31,15 @@ export default function EditOrder() {
       id: order.id,
       ...form,
     });
+
+    navigate("/orders");
+
+    updateOrder({
+      id: order.id,
+      ...form,
+    });
+
+    toast.success("Order updated ✏️");
 
     navigate("/orders");
   };
